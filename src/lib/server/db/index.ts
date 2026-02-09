@@ -13,4 +13,4 @@ const databaseUrl = `postgres://${env.DATABASE_USER}:${env.DATABASE_PASSWORD}@${
 
 const client = postgres(databaseUrl)
 
-export const db = drizzle(client, { schema })
+export const db = drizzle(client, { schema, casing: 'snake_case' })

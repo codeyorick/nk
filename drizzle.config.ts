@@ -12,6 +12,7 @@ export default defineConfig({
   schema: "./src/lib/server/db/schema",
   dialect: "postgresql",
   dbCredentials: { url: databaseUrl },
+  casing: "snake_case",
   verbose: true,
   strict: true
 })
