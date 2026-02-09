@@ -1,13 +1,9 @@
 <script lang="ts">
-	import { buttonVariants } from "$lib/components/ui/shadcn-svelte/button/index.js";
-	import { cn } from "$lib/utils/shadcn-svelte.js";
-	import { Calendar as CalendarPrimitive } from "bits-ui";
+  import { buttonVariants } from "$lib/components/ui/shadcn-svelte/button/index.js"
+  import { cn } from "$lib/utils/shadcn-svelte.js"
+  import { Calendar as CalendarPrimitive } from "bits-ui"
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		...restProps
-	}: CalendarPrimitive.DayProps = $props();
+  let { ref = $bindable(null), class: className, ...restProps }: CalendarPrimitive.DayProps = $props()
 </script>
 
 <CalendarPrimitive.Day

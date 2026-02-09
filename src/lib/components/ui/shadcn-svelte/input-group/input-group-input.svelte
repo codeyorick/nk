@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { cn } from "$lib/utils/shadcn-svelte.js";
-	import type { ComponentProps } from "svelte";
-	import { Input } from "$lib/components/ui/shadcn-svelte/input/index.js";
+  import { cn } from "$lib/utils/shadcn-svelte.js"
+  import type { ComponentProps } from "svelte"
+  import { Input } from "$lib/components/ui/shadcn-svelte/input/index.js"
 
-	let {
-		ref = $bindable(null),
-		value = $bindable(),
-		class: className,
-		...props
-	}: ComponentProps<typeof Input> = $props();
+  let {
+    ref = $bindable(null),
+    value = $bindable(),
+    class: className,
+    ...props
+  }: ComponentProps<typeof Input> = $props()
 </script>
 
 <Input

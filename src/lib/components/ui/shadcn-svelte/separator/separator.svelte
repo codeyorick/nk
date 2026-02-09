@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { Separator as SeparatorPrimitive } from "bits-ui";
-	import { cn } from "$lib/utils/shadcn-svelte.js";
+  import { Separator as SeparatorPrimitive } from "bits-ui"
+  import { cn } from "$lib/utils/shadcn-svelte.js"
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		"data-slot": dataSlot = "separator",
-		...restProps
-	}: SeparatorPrimitive.RootProps = $props();
+  let {
+    ref = $bindable(null),
+    class: className,
+    "data-slot": dataSlot = "separator",
+    ...restProps
+  }: SeparatorPrimitive.RootProps = $props()
 </script>
 
 <SeparatorPrimitive.Root

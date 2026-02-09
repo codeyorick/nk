@@ -1,12 +1,8 @@
 <script lang="ts">
-	import { Calendar as CalendarPrimitive } from "bits-ui";
-	import { cn } from "$lib/utils/shadcn-svelte.js";
+  import { Calendar as CalendarPrimitive } from "bits-ui"
+  import { cn } from "$lib/utils/shadcn-svelte.js"
 
-	let {
-		ref = $bindable(null),
-		class: className,
-		...restProps
-	}: CalendarPrimitive.GridProps = $props();
+  let { ref = $bindable(null), class: className, ...restProps }: CalendarPrimitive.GridProps = $props()
 </script>
 
 <CalendarPrimitive.Grid
