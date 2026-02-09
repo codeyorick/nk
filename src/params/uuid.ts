@@ -1,7 +1,7 @@
 import type { ParamMatcher } from "@sveltejs/kit"
-import * as z from 'zod'
+import * as z from "zod"
 
-const uuidSchema = z.uuid();
+const uuidSchema = z.uuid()
 
 export const match = ((param: string) => {
   try {
