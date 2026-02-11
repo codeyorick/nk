@@ -9,7 +9,7 @@ if (!process.env.DATABASE_PORT) throw new Error("DATABASE_PORT is not set")
 const databaseUrl = `postgres://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOST}:${process.env.DATABASE_PORT}/${process.env.DATABASE_DB}`
 
 export default defineConfig({
-  schema: "./src/lib/server/db/schema",
+  schema: "./src/lib/server/db/schema/index.ts",
   dialect: "postgresql",
   dbCredentials: { url: databaseUrl },
   casing: "snake_case",
