@@ -7,6 +7,7 @@ export const formField = pgTable("form_field", {
   id: uuid().defaultRandom().primaryKey(),
   type: fieldTypes(),
   label: text().notNull(),
+  description: text(),
   placeholder: text(),
   defaultValue: text(),
   multiple: boolean()
@@ -16,6 +17,7 @@ export const formFieldOption = pgTable(
   "form_field_option",
   {
     label: text().notNull(),
+    description: text(),
     value: text().notNull(),
     fieldId: uuid()
       .notNull()
