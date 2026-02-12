@@ -5,7 +5,7 @@ export const fieldTypes = pgEnum("field_types", ["text", "checkbox", "date", "em
 
 export const formField = pgTable("form_field", {
   id: uuid().defaultRandom().primaryKey(),
-  type: fieldTypes(),
+  type: fieldTypes().notNull(),
   label: text().notNull(),
   description: text(),
   placeholder: text(),
