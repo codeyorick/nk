@@ -29,8 +29,8 @@ class SmtpEmailProvider implements EmailProvider {
       console.warn("SMTP_URL not configured, falling back to console")
       return new ConsoleEmailProvider().send(options)
     }
-    // Extensible: integrate with nodemailer, resend, sendgrid, etc.
-    console.warn("SMTP provider not yet implemented, using console fallback")
+    // Placeholder: integrate with nodemailer, resend, sendgrid, etc.
+    console.warn("SMTP provider is a placeholder for future implementation, using console fallback")
     return new ConsoleEmailProvider().send(options)
   }
 }

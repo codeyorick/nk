@@ -25,7 +25,7 @@
     if (part.conditionType === "field_value" && "fieldId" in config) {
       const fieldId = config.fieldId as string
       const operator = config.operator as string
-      const targetValue = config.value as string
+      const targetValue = String(config.value ?? "")
 
       const currentValue = fieldValues[fieldId] ?? ""
 
@@ -37,7 +37,7 @@
         case "contains":
           return currentValue.includes(targetValue)
         case "in":
-          return (targetValue as string).split(",").map(v => v.trim()).includes(currentValue)
+          return targetValue.split(",").map(v => v.trim()).includes(currentValue)
         default:
           return false
       }

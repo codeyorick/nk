@@ -3,7 +3,8 @@ import { eq, and, count } from "drizzle-orm"
 import { db } from "$lib/server/db"
 import {
   registration,
-  registrationData
+  registrationData,
+  type formField
 } from "$lib/server/db/schema"
 import { sendEmail, buildConfirmationEmail } from "$lib/server/email"
 import { env } from "$env/dynamic/private"
@@ -92,7 +93,8 @@ export const actions: Actions = {
       where: { formId: form.id }
     })
 
-    const allFields: Array<{ id: string; partId: string; required: boolean; label: string; type: string }> = []
+    type FieldInfo = Pick<typeof formField.$inferSelect, "id" | "partId" | "required" | "label" | "type">
+    const allFields: FieldInfo[] = []
     for (const part of parts) {
       const fields = await db.query.formField.findMany({
         where: { partId: part.id }
