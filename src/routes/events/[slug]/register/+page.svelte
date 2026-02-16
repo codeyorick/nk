@@ -227,13 +227,13 @@
                     onchange={(e) => { fieldValues[field.id] = (e.target as HTMLSelectElement).value }}
                   >
                     <option value="">Select...</option>
-                    {#each field.options as option}
+                    {#each field.options ?? [] as option}
                       <option value={option.value}>{option.label}</option>
                     {/each}
                   </select>
                 {:else if field.type === "radio"}
                   <div class="space-y-2">
-                    {#each field.options as option}
+                    {#each field.options ?? [] as option}
                       <label class="flex items-center gap-2">
                         <input
                           type="radio"
@@ -321,13 +321,13 @@
                   onchange={(e) => { fieldValues[field.id] = (e.target as HTMLSelectElement).value }}
                 >
                   <option value="">Select...</option>
-                  {#each field.options as option}
+                  {#each field.options ?? [] as option}
                     <option value={option.value}>{option.label}</option>
                   {/each}
                 </select>
               {:else if field.type === "radio"}
                 <div class="space-y-2">
-                  {#each field.options as option}
+                  {#each field.options ?? [] as option}
                     <label class="flex items-center gap-2">
                       <input
                         type="radio"
