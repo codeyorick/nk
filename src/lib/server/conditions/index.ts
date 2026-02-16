@@ -1,4 +1,9 @@
-import type { ConditionConfig, DateRangeCondition, FieldValueCondition, RegistrationCountCondition } from "$lib/server/db/schema/tables"
+import type {
+  ConditionConfig,
+  DateRangeCondition,
+  FieldValueCondition,
+  RegistrationCountCondition
+} from "$lib/server/db/schema/tables"
 
 export type EvaluationContext = {
   fieldValues: Record<string, string | string[]>
@@ -6,11 +11,7 @@ export type EvaluationContext = {
   registrationCount: number
 }
 
-export function evaluateCondition(
-  conditionType: string,
-  config: ConditionConfig,
-  context: EvaluationContext
-): boolean {
+export function evaluateCondition(conditionType: string, config: ConditionConfig, context: EvaluationContext): boolean {
   if (conditionType === "none" || !config) return true
 
   switch (conditionType) {

@@ -40,7 +40,12 @@ export const load: PageServerLoad = async ({ params }) => {
     return {
       event: found,
       form: newForm,
-      parts: [{ ...newPart, fields: [] as Array<(typeof formField.$inferSelect) & { options: (typeof formFieldOption.$inferSelect)[] }> }]
+      parts: [
+        {
+          ...newPart,
+          fields: [] as Array<typeof formField.$inferSelect & { options: (typeof formFieldOption.$inferSelect)[] }>
+        }
+      ]
     }
   }
 
@@ -183,7 +188,17 @@ export const actions: Actions = {
     await db
       .update(formField)
       .set({
-        type: formData.get("type") as "text" | "textarea" | "email" | "phone" | "number" | "date" | "checkbox" | "select" | "radio" | "hidden",
+        type: formData.get("type") as
+          | "text"
+          | "textarea"
+          | "email"
+          | "phone"
+          | "number"
+          | "date"
+          | "checkbox"
+          | "select"
+          | "radio"
+          | "hidden",
         label: formData.get("label") as string,
         description: (formData.get("description") as string) || null,
         placeholder: (formData.get("placeholder") as string) || null,
@@ -229,9 +244,7 @@ export const actions: Actions = {
     const formData = await request.formData()
     const fieldId = formData.get("fieldId") as string
     const value = formData.get("value") as string
-    await db
-      .delete(formFieldOption)
-      .where(and(eq(formFieldOption.fieldId, fieldId), eq(formFieldOption.value, value)))
+    await db.delete(formFieldOption).where(and(eq(formFieldOption.fieldId, fieldId), eq(formFieldOption.value, value)))
     return { success: true }
   }
 }

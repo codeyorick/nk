@@ -15,19 +15,9 @@ export const fieldType = pgEnum("field_type", [
   "hidden"
 ])
 
-export const conditionType = pgEnum("condition_type", [
-  "none",
-  "field_value",
-  "date_range",
-  "registration_count"
-])
+export const conditionType = pgEnum("condition_type", ["none", "field_value", "date_range", "registration_count"])
 
-export const registrationStatus = pgEnum("registration_status", [
-  "pending",
-  "confirmed",
-  "cancelled",
-  "waitlisted"
-])
+export const registrationStatus = pgEnum("registration_status", ["pending", "confirmed", "cancelled", "waitlisted"])
 
 // ── Events ──────────────────────────────────────────────────────────────────
 

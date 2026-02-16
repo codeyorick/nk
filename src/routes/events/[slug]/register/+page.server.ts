@@ -1,11 +1,7 @@
 import { error, fail, redirect } from "@sveltejs/kit"
 import { eq, and, count } from "drizzle-orm"
 import { db } from "$lib/server/db"
-import {
-  registration,
-  registrationData,
-  type formField
-} from "$lib/server/db/schema"
+import { registration, registrationData, type formField } from "$lib/server/db/schema"
 import { sendEmail, buildConfirmationEmail } from "$lib/server/email"
 import { env } from "$env/dynamic/private"
 import crypto from "node:crypto"

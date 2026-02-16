@@ -1,13 +1,5 @@
 import { defineRelations } from "drizzle-orm"
-import {
-  event,
-  registrationForm,
-  formPart,
-  formField,
-  formFieldOption,
-  registration,
-  registrationData
-} from "./tables"
+import { event, registrationForm, formPart, formField, formFieldOption, registration, registrationData } from "./tables"
 
 export const relations = defineRelations(
   { event, registrationForm, formPart, formField, formFieldOption, registration, registrationData },

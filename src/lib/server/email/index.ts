@@ -80,10 +80,7 @@ export function buildConfirmationEmail(params: {
   }
 }
 
-export function buildRegistrationConfirmedEmail(params: {
-  eventName: string
-  registrantEmail: string
-}): EmailOptions {
+export function buildRegistrationConfirmedEmail(params: { eventName: string; registrantEmail: string }): EmailOptions {
   const { eventName, registrantEmail } = params
   return {
     to: registrantEmail,

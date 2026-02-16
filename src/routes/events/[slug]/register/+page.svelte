@@ -37,7 +37,10 @@
         case "contains":
           return currentValue.includes(targetValue)
         case "in":
-          return targetValue.split(",").map(v => v.trim()).includes(currentValue)
+          return targetValue
+            .split(",")
+            .map(v => v.trim())
+            .includes(currentValue)
         default:
           return false
       }

@@ -18,8 +18,8 @@
       .trim()
   }
 
-  let name = $state(form?.values?.name ?? "")
-  let slug = $state(form?.values?.slug ?? "")
+  let name = $derived(form?.values?.name ?? "")
+  let slug = $derived(form?.values?.slug ?? "")
   let autoSlug = $state(true)
 
   $effect(() => {
