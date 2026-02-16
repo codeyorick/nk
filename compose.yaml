@@ -3,11 +3,11 @@ services:
     image: postgres
     restart: always
     ports:
-      - ${DATABASE_PORT}:5432
-    environment: 
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_DB}
+      - ${DOCKER_DB_PORT}:5432
+    environment:
+      POSTGRES_USER: ${DOCKER_DB_USER}
+      POSTGRES_PASSWORD: ${DOCKER_DB_PASSWORD}
+      POSTGRES_DB: ${DOCKER_DB_DATABASE}
     volumes:
       - pgdata:/var/lib/postgresql
 volumes:
