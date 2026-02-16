@@ -1,2 +1,2 @@
-export * from "./tables"
-export { relations } from "./relations"
+export * from './tables';
+export { relations } from './relations';

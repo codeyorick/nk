@@ -1,13 +1,13 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+	return twMerge(clsx(inputs));
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: shadcn-svelte
-export type WithoutChild<T> = T extends { child?: any } ? Omit<T, "child"> : T
+export type WithoutChild<T> = T extends { child?: any } ? Omit<T, 'child'> : T;
 // biome-ignore lint/suspicious/noExplicitAny: shadcn-svelte
-export type WithoutChildren<T> = T extends { children?: any } ? Omit<T, "children"> : T
-export type WithoutChildrenOrChild<T> = WithoutChildren<WithoutChild<T>>
-export type WithElementRef<T, U extends HTMLElement = HTMLElement> = T & { ref?: U | null }
+export type WithoutChildren<T> = T extends { children?: any } ? Omit<T, 'children'> : T;
+export type WithoutChildrenOrChild<T> = WithoutChildren<WithoutChild<T>>;
+export type WithElementRef<T, U extends HTMLElement = HTMLElement> = T & { ref?: U | null };

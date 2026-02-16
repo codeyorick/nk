@@ -1,13 +1,13 @@
-import type { ParamMatcher } from "@sveltejs/kit"
-import * as z from "zod"
+import type { ParamMatcher } from '@sveltejs/kit';
+import * as z from 'zod';
 
-const uuidSchema = z.uuid()
+const uuidSchema = z.uuid();
 
 export const match = ((param: string) => {
-  try {
-    uuidSchema.parse(param)
-    return true
-  } catch {
-    return false
-  }
-}) as ParamMatcher
+	try {
+		uuidSchema.parse(param);
+		return true;
+	} catch {
+		return false;
+	}
+}) as ParamMatcher;
