@@ -156,7 +156,7 @@
 >
   {#each parts as part, partIndex (part.id)}
     <div animate:flip={{duration: flipDurationMs}} class="outline-none group">
-      <Card.Root class="group-focus:ring-2 group-focus:ring-ring/50">
+      <Card.Root class="group-focus-visible:ring-2 group-focus-visible:ring-ring/50">
         <Card.Header>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2 flex-1">
@@ -333,7 +333,7 @@
               <div 
                 role="button"
                 tabindex="0"
-                class="rounded-md border p-4 bg-card outline-none focus:ring-2 focus:ring-ring/50"
+                class="rounded-md border p-4 bg-card outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                 animate:flip={{duration: flipDurationMs}}
               >
                 <div class="flex items-center justify-between">
