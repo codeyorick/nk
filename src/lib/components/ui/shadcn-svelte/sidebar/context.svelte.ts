@@ -53,10 +53,7 @@ class SidebarState {
   }
 
   toggle = () => {
-    return this.#isMobile.current
-      ? // biome-ignore lint/suspicious/noAssignInExpressions: shadcn-svelte
-        (this.openMobile = !this.openMobile)
-      : this.setOpen(!this.open)
+    return this.#isMobile.current ? (this.openMobile = !this.openMobile) : this.setOpen(!this.open)
   }
 }
 

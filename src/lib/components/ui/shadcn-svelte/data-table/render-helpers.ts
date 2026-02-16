@@ -72,7 +72,7 @@ export class RenderSnippetConfig<TProps> {
  * @see {@link https://tanstack.com/table/latest/docs/guide/column-defs}
  */
 export function renderComponent<
-  // biome-ignore lint/suspicious/noExplicitAny: shadcn-svelte
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   T extends Component<any>,
   Props extends ComponentProps<T>
 >(component: T, props: Props = {} as Props) {
