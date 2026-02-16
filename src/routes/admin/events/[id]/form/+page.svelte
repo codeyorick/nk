@@ -11,8 +11,8 @@
   import ChevronUpIcon from "@lucide/svelte/icons/chevron-up"
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down"
   import GripVerticalIcon from "@lucide/svelte/icons/grip-vertical"
-  import { dndzone } from 'svelte-dnd-action'
-  import { flip } from 'svelte/animate'
+  import { dndzone } from "svelte-dnd-action"
+  import { flip } from "svelte/animate"
 
   let { data } = $props()
 
@@ -23,12 +23,12 @@
 
   // Local state for parts ordering with dnd
   let parts = $state(data.parts.map(p => ({ ...p })))
-  
+
   // Update parts when data changes
   $effect(() => {
     parts = data.parts.map(p => ({ ...p }))
   })
-  
+
   // Track when drag is happening
   const flipDurationMs = 200
 
@@ -38,14 +38,14 @@
 
   async function handlePartFinalize(e: CustomEvent) {
     parts = e.detail.items
-    
+
     // Update sort orders in database after drag is complete
     for (let i = 0; i < parts.length; i++) {
       if (parts[i].sortOrder !== i) {
         const formData = new FormData()
         formData.append("partId", parts[i].id)
         formData.append("sortOrder", String(i))
-        
+
         await fetch("?/reorderPart", {
           method: "POST",
           body: formData
@@ -57,23 +57,23 @@
   async function handleFieldSort(e: CustomEvent, partId: string) {
     const part = parts.find(p => p.id === partId)
     if (!part) return
-    
+
     part.fields = e.detail.items
   }
 
   async function handleFieldFinalize(e: CustomEvent, partId: string) {
     const part = parts.find(p => p.id === partId)
     if (!part) return
-    
+
     part.fields = e.detail.items
-    
+
     // Update sort orders in database after drag is complete
     for (let i = 0; i < part.fields.length; i++) {
       if (part.fields[i].sortOrder !== i) {
         const formData = new FormData()
         formData.append("fieldId", part.fields[i].id)
         formData.append("sortOrder", String(i))
-        
+
         await fetch("?/reorderField", {
           method: "POST",
           body: formData
@@ -101,7 +101,6 @@
     { value: "date_range", label: "Based on date/time" },
     { value: "registration_count", label: "Based on registration count" }
   ]
-
 </script>
 
 <div class="flex items-center justify-between mb-6">

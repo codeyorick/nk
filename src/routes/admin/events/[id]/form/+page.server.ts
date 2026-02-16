@@ -263,15 +263,9 @@ export const actions: Actions = {
       const currentPart = parts[currentIndex]
       const prevPart = parts[currentIndex - 1]
 
-      await db
-        .update(formPart)
-        .set({ sortOrder: prevPart.sortOrder })
-        .where(eq(formPart.id, currentPart.id))
+      await db.update(formPart).set({ sortOrder: prevPart.sortOrder }).where(eq(formPart.id, currentPart.id))
 
-      await db
-        .update(formPart)
-        .set({ sortOrder: currentPart.sortOrder })
-        .where(eq(formPart.id, prevPart.id))
+      await db.update(formPart).set({ sortOrder: currentPart.sortOrder }).where(eq(formPart.id, prevPart.id))
     }
 
     return { success: true }
@@ -292,15 +286,9 @@ export const actions: Actions = {
       const currentPart = parts[currentIndex]
       const nextPart = parts[currentIndex + 1]
 
-      await db
-        .update(formPart)
-        .set({ sortOrder: nextPart.sortOrder })
-        .where(eq(formPart.id, currentPart.id))
+      await db.update(formPart).set({ sortOrder: nextPart.sortOrder }).where(eq(formPart.id, currentPart.id))
 
-      await db
-        .update(formPart)
-        .set({ sortOrder: currentPart.sortOrder })
-        .where(eq(formPart.id, nextPart.id))
+      await db.update(formPart).set({ sortOrder: currentPart.sortOrder }).where(eq(formPart.id, nextPart.id))
     }
 
     return { success: true }
@@ -311,10 +299,7 @@ export const actions: Actions = {
     const partId = formData.get("partId") as string
     const newSortOrder = Number(formData.get("sortOrder"))
 
-    await db
-      .update(formPart)
-      .set({ sortOrder: newSortOrder })
-      .where(eq(formPart.id, partId))
+    await db.update(formPart).set({ sortOrder: newSortOrder }).where(eq(formPart.id, partId))
 
     return { success: true }
   },
@@ -334,15 +319,9 @@ export const actions: Actions = {
       const currentField = fields[currentIndex]
       const prevField = fields[currentIndex - 1]
 
-      await db
-        .update(formField)
-        .set({ sortOrder: prevField.sortOrder })
-        .where(eq(formField.id, currentField.id))
+      await db.update(formField).set({ sortOrder: prevField.sortOrder }).where(eq(formField.id, currentField.id))
 
-      await db
-        .update(formField)
-        .set({ sortOrder: currentField.sortOrder })
-        .where(eq(formField.id, prevField.id))
+      await db.update(formField).set({ sortOrder: currentField.sortOrder }).where(eq(formField.id, prevField.id))
     }
 
     return { success: true }
@@ -363,15 +342,9 @@ export const actions: Actions = {
       const currentField = fields[currentIndex]
       const nextField = fields[currentIndex + 1]
 
-      await db
-        .update(formField)
-        .set({ sortOrder: nextField.sortOrder })
-        .where(eq(formField.id, currentField.id))
+      await db.update(formField).set({ sortOrder: nextField.sortOrder }).where(eq(formField.id, currentField.id))
 
-      await db
-        .update(formField)
-        .set({ sortOrder: currentField.sortOrder })
-        .where(eq(formField.id, nextField.id))
+      await db.update(formField).set({ sortOrder: currentField.sortOrder }).where(eq(formField.id, nextField.id))
     }
 
     return { success: true }
@@ -382,10 +355,7 @@ export const actions: Actions = {
     const fieldId = formData.get("fieldId") as string
     const newSortOrder = Number(formData.get("sortOrder"))
 
-    await db
-      .update(formField)
-      .set({ sortOrder: newSortOrder })
-      .where(eq(formField.id, fieldId))
+    await db.update(formField).set({ sortOrder: newSortOrder }).where(eq(formField.id, fieldId))
 
     return { success: true }
   }
