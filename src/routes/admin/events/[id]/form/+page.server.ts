@@ -246,5 +246,117 @@ export const actions: Actions = {
     const value = formData.get("value") as string
     await db.delete(formFieldOption).where(and(eq(formFieldOption.fieldId, fieldId), eq(formFieldOption.value, value)))
     return { success: true }
+  },
+
+  movePartUp: async ({ request }) => {
+    const formData = await request.formData()
+    const partId = formData.get("partId") as string
+    const formId = formData.get("formId") as string
+
+    const parts = await db.query.formPart.findMany({
+      where: { formId },
+      orderBy: { sortOrder: "asc" }
+    })
+
+    const currentIndex = parts.findIndex(p => p.id === partId)
+    if (currentIndex > 0) {
+      const currentPart = parts[currentIndex]
+      const prevPart = parts[currentIndex - 1]
+
+      await db.update(formPart).set({ sortOrder: prevPart.sortOrder }).where(eq(formPart.id, currentPart.id))
+
+      await db.update(formPart).set({ sortOrder: currentPart.sortOrder }).where(eq(formPart.id, prevPart.id))
+    }
+
+    return { success: true }
+  },
+
+  movePartDown: async ({ request }) => {
+    const formData = await request.formData()
+    const partId = formData.get("partId") as string
+    const formId = formData.get("formId") as string
+
+    const parts = await db.query.formPart.findMany({
+      where: { formId },
+      orderBy: { sortOrder: "asc" }
+    })
+
+    const currentIndex = parts.findIndex(p => p.id === partId)
+    if (currentIndex < parts.length - 1) {
+      const currentPart = parts[currentIndex]
+      const nextPart = parts[currentIndex + 1]
+
+      await db.update(formPart).set({ sortOrder: nextPart.sortOrder }).where(eq(formPart.id, currentPart.id))
+
+      await db.update(formPart).set({ sortOrder: currentPart.sortOrder }).where(eq(formPart.id, nextPart.id))
+    }
+
+    return { success: true }
+  },
+
+  reorderPart: async ({ request }) => {
+    const formData = await request.formData()
+    const partId = formData.get("partId") as string
+    const newSortOrder = Number(formData.get("sortOrder"))
+
+    await db.update(formPart).set({ sortOrder: newSortOrder }).where(eq(formPart.id, partId))
+
+    return { success: true }
+  },
+
+  moveFieldUp: async ({ request }) => {
+    const formData = await request.formData()
+    const fieldId = formData.get("fieldId") as string
+    const partId = formData.get("partId") as string
+
+    const fields = await db.query.formField.findMany({
+      where: { partId },
+      orderBy: { sortOrder: "asc" }
+    })
+
+    const currentIndex = fields.findIndex(f => f.id === fieldId)
+    if (currentIndex > 0) {
+      const currentField = fields[currentIndex]
+      const prevField = fields[currentIndex - 1]
+
+      await db.update(formField).set({ sortOrder: prevField.sortOrder }).where(eq(formField.id, currentField.id))
+
+      await db.update(formField).set({ sortOrder: currentField.sortOrder }).where(eq(formField.id, prevField.id))
+    }
+
+    return { success: true }
+  },
+
+  moveFieldDown: async ({ request }) => {
+    const formData = await request.formData()
+    const fieldId = formData.get("fieldId") as string
+    const partId = formData.get("partId") as string
+
+    const fields = await db.query.formField.findMany({
+      where: { partId },
+      orderBy: { sortOrder: "asc" }
+    })
+
+    const currentIndex = fields.findIndex(f => f.id === fieldId)
+    if (currentIndex < fields.length - 1) {
+      const currentField = fields[currentIndex]
+      const nextField = fields[currentIndex + 1]
+
+      await db.update(formField).set({ sortOrder: nextField.sortOrder }).where(eq(formField.id, currentField.id))
+
+      await db.update(formField).set({ sortOrder: currentField.sortOrder }).where(eq(formField.id, nextField.id))
+    }
+
+    return { success: true }
+  },
+
+  reorderField: async ({ request }) => {
+    const formData = await request.formData()
+    const fieldId = formData.get("fieldId") as string
+    const newSortOrder = Number(formData.get("sortOrder"))
+
+    await db.update(formField).set({ sortOrder: newSortOrder }).where(eq(formField.id, fieldId))
+
+    return { success: true }
   }
 }
