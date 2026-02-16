@@ -22,15 +22,24 @@
   let addingOptionToFieldId = $state<string | null>(null)
 
   // Local state for parts ordering with dnd
-  let parts = $state(data.parts.map((p, i) => ({ ...p, id: p.id, sortOrder: i })))
+  let parts = $state(data.parts.map(p => ({ ...p })))
+  
+  // Update parts when data changes
+  $effect(() => {
+    parts = data.parts.map(p => ({ ...p }))
+  })
   
   // Track when drag is happening
   const flipDurationMs = 200
 
   async function handlePartSort(e: CustomEvent) {
     parts = e.detail.items
+  }
+
+  async function handlePartFinalize(e: CustomEvent) {
+    parts = e.detail.items
     
-    // Update sort orders in database
+    // Update sort orders in database after drag is complete
     for (let i = 0; i < parts.length; i++) {
       if (parts[i].sortOrder !== i) {
         const formData = new FormData()
@@ -45,17 +54,20 @@
     }
   }
 
-  function handlePartFinalize(e: CustomEvent) {
-    parts = e.detail.items
-  }
-
   async function handleFieldSort(e: CustomEvent, partId: string) {
     const part = parts.find(p => p.id === partId)
     if (!part) return
     
     part.fields = e.detail.items
+  }
+
+  async function handleFieldFinalize(e: CustomEvent, partId: string) {
+    const part = parts.find(p => p.id === partId)
+    if (!part) return
     
-    // Update sort orders in database
+    part.fields = e.detail.items
+    
+    // Update sort orders in database after drag is complete
     for (let i = 0; i < part.fields.length; i++) {
       if (part.fields[i].sortOrder !== i) {
         const formData = new FormData()
@@ -68,12 +80,6 @@
         })
       }
     }
-  }
-
-  function handleFieldFinalize(e: CustomEvent, partId: string) {
-    const part = parts.find(p => p.id === partId)
-    if (!part) return
-    part.fields = e.detail.items
   }
 
   const fieldTypes = [
