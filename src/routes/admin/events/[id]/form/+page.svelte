@@ -291,7 +291,7 @@
                   <Separator class="my-4" />
                   <div class="space-y-3">
                     <h5 class="text-sm font-medium">Options</h5>
-                    {#each field.options as option}
+                    {#each field.options ?? [] as option}
                       <div class="flex items-center gap-2">
                         <span class="text-sm">{option.label}</span>
                         <span class="text-xs text-muted-foreground">({option.value})</span>
@@ -305,6 +305,7 @@
 
                     <form method="POST" action="?/addOption" use:enhance class="flex gap-2 items-end">
                       <input type="hidden" name="fieldId" value={field.id} />
+                      <input type="hidden" name="sortOrder" value={String(field.options?.length ?? 0)} />
                       <div class="flex-1 space-y-1">
                         <Label>Label</Label>
                         <Input name="label" placeholder="Option label" required />
