@@ -8,6 +8,9 @@
   import { Switch } from "$lib/components/ui/shadcn-svelte/switch"
   import { Separator } from "$lib/components/ui/shadcn-svelte/separator"
   import { enhance } from "$app/forms"
+  import ChevronUpIcon from "@lucide/svelte/icons/chevron-up"
+  import ChevronDownIcon from "@lucide/svelte/icons/chevron-down"
+  import GripVerticalIcon from "@lucide/svelte/icons/grip-vertical"
 
   let { data } = $props()
 
@@ -15,6 +18,10 @@
   let editingFieldId = $state<string | null>(null)
   let addingFieldToPartId = $state<string | null>(null)
   let addingOptionToFieldId = $state<string | null>(null)
+  let draggedPartId = $state<string | null>(null)
+  let draggedFieldId = $state<string | null>(null)
+  let dragOverPartId = $state<string | null>(null)
+  let dragOverFieldId = $state<string | null>(null)
 
   const fieldTypes = [
     { value: "text", label: "Text" },
@@ -35,6 +42,124 @@
     { value: "date_range", label: "Based on date/time" },
     { value: "registration_count", label: "Based on registration count" }
   ]
+
+  // Drag and drop handlers for parts
+  function handlePartDragStart(partId: string) {
+    draggedPartId = partId
+  }
+
+  function handlePartDragOver(e: DragEvent, partId: string) {
+    e.preventDefault()
+    dragOverPartId = partId
+  }
+
+  function handlePartDragLeave() {
+    dragOverPartId = null
+  }
+
+  async function handlePartDrop(e: DragEvent, targetPartId: string) {
+    e.preventDefault()
+    if (!draggedPartId || draggedPartId === targetPartId) {
+      draggedPartId = null
+      dragOverPartId = null
+      return
+    }
+
+    const draggedIndex = data.parts.findIndex(p => p.id === draggedPartId)
+    const targetIndex = data.parts.findIndex(p => p.id === targetPartId)
+
+    if (draggedIndex !== -1 && targetIndex !== -1) {
+      // Reorder parts by swapping sortOrder
+      const formData = new FormData()
+      formData.append("partId", draggedPartId)
+      formData.append("sortOrder", String(data.parts[targetIndex].sortOrder))
+      
+      const formData2 = new FormData()
+      formData2.append("partId", targetPartId)
+      formData2.append("sortOrder", String(data.parts[draggedIndex].sortOrder))
+
+      await fetch("?/reorderPart", {
+        method: "POST",
+        body: formData
+      })
+
+      await fetch("?/reorderPart", {
+        method: "POST",
+        body: formData2
+      })
+
+      location.reload()
+    }
+
+    draggedPartId = null
+    dragOverPartId = null
+  }
+
+  function handlePartDragEnd() {
+    draggedPartId = null
+    dragOverPartId = null
+  }
+
+  // Drag and drop handlers for fields
+  function handleFieldDragStart(fieldId: string) {
+    draggedFieldId = fieldId
+  }
+
+  function handleFieldDragOver(e: DragEvent, fieldId: string) {
+    e.preventDefault()
+    dragOverFieldId = fieldId
+  }
+
+  function handleFieldDragLeave() {
+    dragOverFieldId = null
+  }
+
+  async function handleFieldDrop(e: DragEvent, targetFieldId: string, partId: string) {
+    e.preventDefault()
+    if (!draggedFieldId || draggedFieldId === targetFieldId) {
+      draggedFieldId = null
+      dragOverFieldId = null
+      return
+    }
+
+    const part = data.parts.find(p => p.id === partId)
+    if (!part) return
+
+    const draggedIndex = part.fields.findIndex(f => f.id === draggedFieldId)
+    const targetIndex = part.fields.findIndex(f => f.id === targetFieldId)
+
+    if (draggedIndex !== -1 && targetIndex !== -1) {
+      // Reorder fields by swapping sortOrder
+      const formData = new FormData()
+      formData.append("fieldId", draggedFieldId)
+      formData.append("sortOrder", String(part.fields[targetIndex].sortOrder))
+      
+      const formData2 = new FormData()
+      formData2.append("fieldId", targetFieldId)
+      formData2.append("sortOrder", String(part.fields[draggedIndex].sortOrder))
+
+      await fetch("?/reorderField", {
+        method: "POST",
+        body: formData
+      })
+
+      await fetch("?/reorderField", {
+        method: "POST",
+        body: formData2
+      })
+
+      location.reload()
+    }
+
+    draggedFieldId = null
+    dragOverFieldId = null
+  }
+
+  function handleFieldDragEnd() {
+    draggedFieldId = null
+    dragOverFieldId = null
+  }
+
 </script>
 
 <div class="flex items-center justify-between mb-6">
@@ -80,24 +205,62 @@
 
 <!-- Parts List -->
 {#each data.parts as part, partIndex}
-  <Card.Root class="mb-6">
+  <Card.Root 
+    class="mb-6 {dragOverPartId === part.id ? 'ring-2 ring-primary' : ''}"
+    draggable="true"
+    ondragstart={() => handlePartDragStart(part.id)}
+    ondragover={(e) => handlePartDragOver(e, part.id)}
+    ondragleave={handlePartDragLeave}
+    ondrop={(e) => handlePartDrop(e, part.id)}
+    ondragend={handlePartDragEnd}
+    style="opacity: {draggedPartId === part.id ? '0.5' : '1'}; cursor: move;"
+  >
     <Card.Header>
       <div class="flex items-center justify-between">
-        <div>
-          <Card.Title class="flex items-center gap-2">
-            <span class="text-muted-foreground text-sm">#{partIndex + 1}</span>
-            {part.title}
-            {#if part.conditionType !== "none"}
-              <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">
-                Conditional
-              </span>
+        <div class="flex items-center gap-2 flex-1">
+          <GripVerticalIcon class="w-5 h-5 text-muted-foreground" />
+          <div class="flex-1">
+            <Card.Title class="flex items-center gap-2">
+              <span class="text-muted-foreground text-sm">#{partIndex + 1}</span>
+              {part.title}
+              {#if part.conditionType !== "none"}
+                <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full">
+                  Conditional
+                </span>
+              {/if}
+            </Card.Title>
+            {#if part.description}
+              <Card.Description>{part.description}</Card.Description>
             {/if}
-          </Card.Title>
-          {#if part.description}
-            <Card.Description>{part.description}</Card.Description>
-          {/if}
+          </div>
         </div>
         <div class="flex gap-2">
+          <form method="POST" action="?/movePartUp" use:enhance>
+            <input type="hidden" name="partId" value={part.id} />
+            <input type="hidden" name="formId" value={data.form.id} />
+            <Button.Root 
+              type="submit" 
+              variant="outline" 
+              size="sm"
+              disabled={partIndex === 0}
+              title="Move up"
+            >
+              <ChevronUpIcon class="w-4 h-4" />
+            </Button.Root>
+          </form>
+          <form method="POST" action="?/movePartDown" use:enhance>
+            <input type="hidden" name="partId" value={part.id} />
+            <input type="hidden" name="formId" value={data.form.id} />
+            <Button.Root 
+              type="submit" 
+              variant="outline" 
+              size="sm"
+              disabled={partIndex === data.parts.length - 1}
+              title="Move down"
+            >
+              <ChevronDownIcon class="w-4 h-4" />
+            </Button.Root>
+          </form>
           <Button.Root
             variant="outline"
             size="sm"
@@ -217,9 +380,19 @@
       {:else}
         <div class="space-y-3">
           {#each part.fields as field, fieldIndex}
-            <div class="rounded-md border p-4">
+            <div 
+              class="rounded-md border p-4 {dragOverFieldId === field.id ? 'ring-2 ring-primary' : ''}"
+              draggable="true"
+              ondragstart={() => handleFieldDragStart(field.id)}
+              ondragover={(e) => handleFieldDragOver(e, field.id)}
+              ondragleave={handleFieldDragLeave}
+              ondrop={(e) => handleFieldDrop(e, field.id, part.id)}
+              ondragend={handleFieldDragEnd}
+              style="opacity: {draggedFieldId === field.id ? '0.5' : '1'}; cursor: move;"
+            >
               <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 flex-1">
+                  <GripVerticalIcon class="w-4 h-4 text-muted-foreground" />
                   <span class="text-xs text-muted-foreground font-mono bg-muted px-2 py-0.5 rounded">{field.type}</span>
                   <span class="font-medium">{field.label}</span>
                   {#if field.required}
@@ -230,6 +403,32 @@
                   {/if}
                 </div>
                 <div class="flex gap-2">
+                  <form method="POST" action="?/moveFieldUp" use:enhance>
+                    <input type="hidden" name="fieldId" value={field.id} />
+                    <input type="hidden" name="partId" value={part.id} />
+                    <Button.Root 
+                      type="submit" 
+                      variant="outline" 
+                      size="sm"
+                      disabled={fieldIndex === 0}
+                      title="Move up"
+                    >
+                      <ChevronUpIcon class="w-4 h-4" />
+                    </Button.Root>
+                  </form>
+                  <form method="POST" action="?/moveFieldDown" use:enhance>
+                    <input type="hidden" name="fieldId" value={field.id} />
+                    <input type="hidden" name="partId" value={part.id} />
+                    <Button.Root 
+                      type="submit" 
+                      variant="outline" 
+                      size="sm"
+                      disabled={fieldIndex === part.fields.length - 1}
+                      title="Move down"
+                    >
+                      <ChevronDownIcon class="w-4 h-4" />
+                    </Button.Root>
+                  </form>
                   <Button.Root
                     variant="outline"
                     size="sm"
