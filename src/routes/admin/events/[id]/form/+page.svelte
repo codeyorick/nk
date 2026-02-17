@@ -11,6 +11,15 @@
 	import GripVerticalIcon from '@lucide/svelte/icons/grip-vertical';
 	import { dndzone } from 'svelte-dnd-action';
 	import { flip } from 'svelte/animate';
+	import { setBreadcrumb } from '$lib/state/breadcrumb.svelte.js';
+	import { page } from '$app/state';
+
+	$effect(() => {
+		setBreadcrumb({
+			path: page.url.pathname,
+			name: 'Edit'
+		});
+	});
 
 	let { data } = $props();
 

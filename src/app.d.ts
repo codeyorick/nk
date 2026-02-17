@@ -9,9 +9,12 @@ declare global {
 			session?: Session;
 		}
 
+		interface PageData {
+			breadcrumb?: { url: string; label: string }[];
+		}
+
 		// interface Error {}
 		// interface Locals {}
-		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
 	}

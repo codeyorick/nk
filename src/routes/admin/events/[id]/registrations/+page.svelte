@@ -3,6 +3,15 @@
 	import * as Card from '$lib/components/ui/shadcn-svelte/card';
 	import * as Table from '$lib/components/ui/shadcn-svelte/table';
 	import { enhance } from '$app/forms';
+	import { setBreadcrumb } from '$lib/state/breadcrumb.svelte.js';
+	import { page } from '$app/state';
+
+	$effect(() => {
+		setBreadcrumb({
+			path: page.url.pathname,
+			name: 'Registrations'
+		});
+	});
 
 	let { data } = $props();
 

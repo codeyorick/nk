@@ -1,17 +1,9 @@
-import { fail, redirect, error } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { db } from '$lib/server/db';
 import { event } from '$lib/server/db/schema';
 import { eventSchema } from '$lib/schemas';
-import type { PageServerLoad, Actions } from './$types';
-
-export const load: PageServerLoad = async ({ params }) => {
-	const found = await db.query.event.findFirst({
-		where: { id: params.id }
-	});
-	if (!found) error(404, 'Event not found');
-	return { event: found };
-};
+import type { Actions } from './$types';
 
 export const actions: Actions = {
 	update: async ({ request, params }) => {

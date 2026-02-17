@@ -6,6 +6,12 @@
 	import { Label } from '$lib/components/ui/shadcn-svelte/label';
 	import { Switch } from '$lib/components/ui/shadcn-svelte/switch';
 	import { enhance } from '$app/forms';
+	import { setBreadcrumb } from '$lib/state/breadcrumb.svelte.js';
+
+	setBreadcrumb({
+		path: '/admin/events/new',
+		name: 'New'
+	});
 
 	let { form } = $props();
 
