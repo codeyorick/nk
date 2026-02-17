@@ -1,39 +1,52 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/shadcn-svelte/button';
+	import * as Alert from '$lib/components/ui/shadcn-svelte/alert';
 	import * as Card from '$lib/components/ui/shadcn-svelte/card';
+	import * as Field from '$lib/components/ui/shadcn-svelte/field';
 	import { Input } from '$lib/components/ui/shadcn-svelte/input';
 	import { Textarea } from '$lib/components/ui/shadcn-svelte/textarea';
-	import { Label } from '$lib/components/ui/shadcn-svelte/label';
 	import { Switch } from '$lib/components/ui/shadcn-svelte/switch';
+
+	import CheckCircle2Icon from '@lucide/svelte/icons/check-circle-2';
+	import PencilIcon from '@lucide/svelte/icons/pencil';
+	import Rows4Icon from '@lucide/svelte/icons/rows-4';
+
 	import { enhance } from '$app/forms';
+	import DateRangePicker from '$lib/components/ui/date-range-picker.svelte';
+	import { dateToCalendarDate } from '$lib/components/ui/date-range-picker.svelte';
 
 	let { data, form } = $props();
 
-	function formatDateForInput(date: string | Date | null | undefined): string {
-		if (!date) return '';
-		const d = new Date(date);
-		return d.toISOString().slice(0, 16);
-	}
+	let date = $derived({
+		start: dateToCalendarDate(data.event.startDate),
+		end: dateToCalendarDate(data.event.endDate)
+	});
 </script>
 
-<div class="max-w-2xl">
+<div class="max-w-lg">
 	<div class="flex items-center justify-between mb-6">
 		<h1 class="text-3xl font-bold">Edit Event</h1>
 		<div class="flex gap-2">
-			<Button variant="outline" href="/admin/events/{data.event.id}/form">Edit Form</Button>
-			<Button variant="outline" href="/admin/events/{data.event.id}/registrations"
-				>Registrations</Button
+			<Button
+				variant="outline"
+				size="sm"
+				href="/admin/events/{data.event.id}/form"
+				aria-label="Edit Form"
 			>
+				<PencilIcon />
+				<span>Form</span>
+			</Button>
+			<Button
+				variant="outline"
+				size="sm"
+				href="/admin/events/{data.event.id}/registrations"
+				aria-label="View Registrations"
+			>
+				<Rows4Icon />
+				<span>Registrations</span>
+			</Button>
 		</div>
 	</div>
-
-	{#if form?.success}
-		<div
-			class="mb-4 rounded-md bg-green-50 dark:bg-green-900/20 p-4 text-green-700 dark:text-green-300"
-		>
-			Event updated successfully!
-		</div>
-	{/if}
 
 	<form method="POST" action="?/update" use:enhance>
 		<Card.Root>
@@ -41,68 +54,63 @@
 				<Card.Title>Event Details</Card.Title>
 			</Card.Header>
 			<Card.Content class="space-y-4">
-				<div class="space-y-2">
-					<Label for="name">Name *</Label>
-					<Input id="name" name="name" value={form?.values?.name ?? data.event.name} required />
-					{#if form?.errors?.name}
-						<p class="text-sm text-destructive">{form.errors.name[0]}</p>
-					{/if}
-				</div>
+				<Field.Group>
+					<Field.Field>
+						<Field.Label for="name">Name *</Field.Label>
+						<Input id="name" name="name" value={form?.values?.name ?? data.event.name} />
+						{#if form?.errors?.name}
+							<Field.Error>{form.errors.name[0]}</Field.Error>
+						{/if}
+					</Field.Field>
 
-				<div class="space-y-2">
-					<Label for="slug">Slug *</Label>
-					<Input id="slug" name="slug" value={form?.values?.slug ?? data.event.slug} required />
-					{#if form?.errors?.slug}
-						<p class="text-sm text-destructive">{form.errors.slug[0]}</p>
-					{/if}
-				</div>
+					<Field.Field>
+						<Field.Label for="slug">Slug *</Field.Label>
+						<Input id="slug" name="slug" value={form?.values?.slug ?? data.event.slug} required />
+						{#if form?.errors?.slug}
+							<Field.Error>{form.errors.slug[0]}</Field.Error>
+						{/if}
+					</Field.Field>
 
-				<div class="space-y-2">
-					<Label for="description">Description</Label>
-					<Textarea
-						id="description"
-						name="description"
-						value={form?.values?.description ?? data.event.description ?? ''}
-					/>
-				</div>
-
-				<div class="grid grid-cols-2 gap-4">
-					<div class="space-y-2">
-						<Label for="startDate">Start Date</Label>
-						<Input
-							id="startDate"
-							name="startDate"
-							type="datetime-local"
-							value={form?.values?.startDate ?? formatDateForInput(data.event.startDate)}
+					<Field.Field>
+						<Field.Label for="description">Description</Field.Label>
+						<Textarea
+							id="description"
+							name="description"
+							value={form?.values?.description ?? data.event.description ?? ''}
 						/>
-					</div>
-					<div class="space-y-2">
-						<Label for="endDate">End Date</Label>
+					</Field.Field>
+
+					<Field.Field>
+						<Field.Label for="startDate">Date</Field.Label>
+						<DateRangePicker bind:value={date} />
+					</Field.Field>
+
+					<Field.Field>
+						<Field.Label for="maxRegistrations">Max Registrations</Field.Label>
 						<Input
-							id="endDate"
-							name="endDate"
-							type="datetime-local"
-							value={form?.values?.endDate ?? formatDateForInput(data.event.endDate)}
+							id="maxRegistrations"
+							name="maxRegistrations"
+							type="number"
+							min="1"
+							placeholder="Leave empty for unlimited"
+							value={form?.values?.maxRegistrations ?? data.event.maxRegistrations ?? ''}
 						/>
-					</div>
-				</div>
+						<input name="startDate" type="hidden" value={date.start?.toString() ?? ''} />
+						<input name="endDate" type="hidden" value={date.end?.toString() ?? ''} />
+					</Field.Field>
 
-				<div class="space-y-2">
-					<Label for="maxRegistrations">Max Registrations</Label>
-					<Input
-						id="maxRegistrations"
-						name="maxRegistrations"
-						type="number"
-						min="1"
-						placeholder="Leave empty for unlimited"
-						value={form?.values?.maxRegistrations ?? data.event.maxRegistrations ?? ''}
-					/>
-				</div>
+					<Field.Field orientation="horizontal">
+						<Field.Label for="isPublished">Published</Field.Label>
+						<Switch id="isPublished" name="isPublished" checked={data.event.isPublished} />
+					</Field.Field>
+				</Field.Group>
 
-				<div class="flex items-center gap-2">
-					<Switch id="isPublished" name="isPublished" checked={data.event.isPublished} />
-					<Label for="isPublished">Published</Label>
-				</div>
+				{#if form?.success}
+					<Alert.Root>
+						<CheckCircle2Icon />
+						<Alert.Title>Event updated successfully!</Alert.Title>
+					</Alert.Root>
+				{/if}
 			</Card.Content>
 			<Card.Footer class="flex justify-between">
 				<Button variant="outline" href="/admin/events">Back</Button>
@@ -116,13 +124,13 @@
 			<Card.Header>
 				<Card.Title class="text-destructive">Danger Zone</Card.Title>
 			</Card.Header>
-			<Card.Content>
-				<p class="text-sm text-muted-foreground mb-4">
-					Deleting this event will remove all registration forms, registrations, and associated
-					data. This action cannot be undone.
-				</p>
-				<Button type="submit" variant="destructive">Delete Event</Button>
+			<Card.Content class="text-sm text-muted-foreground">
+				Deleting this event will remove all registration forms, registrations, and associated data.
+				This action cannot be undone.
 			</Card.Content>
+			<Card.Footer>
+				<Button type="submit" variant="destructive">Delete Event</Button>
+			</Card.Footer>
 		</Card.Root>
 	</form>
 </div>
