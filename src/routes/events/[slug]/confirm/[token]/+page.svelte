@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Button from '$lib/components/ui/shadcn-svelte/button';
+	import { Button } from '$lib/components/ui/shadcn-svelte/button';
 	import * as Card from '$lib/components/ui/shadcn-svelte/card';
 
 	let { data } = $props();
@@ -23,7 +23,7 @@
 			{/if}
 		</Card.Content>
 		<Card.Footer>
-			<Button.Root href="/events" variant="outline">← Back to Events</Button.Root>
+			<Button href="/events" variant="outline">← Back to Events</Button>
 		</Card.Footer>
 	</Card.Root>
 </div>

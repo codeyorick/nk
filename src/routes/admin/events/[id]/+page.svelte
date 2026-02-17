@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Button from '$lib/components/ui/shadcn-svelte/button';
+	import { Button } from '$lib/components/ui/shadcn-svelte/button';
 	import * as Card from '$lib/components/ui/shadcn-svelte/card';
 	import { Input } from '$lib/components/ui/shadcn-svelte/input';
 	import { Textarea } from '$lib/components/ui/shadcn-svelte/textarea';
@@ -20,11 +20,9 @@
 	<div class="flex items-center justify-between mb-6">
 		<h1 class="text-3xl font-bold">Edit Event</h1>
 		<div class="flex gap-2">
-			<Button.Root variant="outline" href="/admin/events/{data.event.id}/form"
-				>Edit Form</Button.Root
-			>
-			<Button.Root variant="outline" href="/admin/events/{data.event.id}/registrations"
-				>Registrations</Button.Root
+			<Button variant="outline" href="/admin/events/{data.event.id}/form">Edit Form</Button>
+			<Button variant="outline" href="/admin/events/{data.event.id}/registrations"
+				>Registrations</Button
 			>
 		</div>
 	</div>
@@ -107,8 +105,8 @@
 				</div>
 			</Card.Content>
 			<Card.Footer class="flex justify-between">
-				<Button.Root variant="outline" href="/admin/events">Back</Button.Root>
-				<Button.Root type="submit">Save Changes</Button.Root>
+				<Button variant="outline" href="/admin/events">Back</Button>
+				<Button type="submit">Save Changes</Button>
 			</Card.Footer>
 		</Card.Root>
 	</form>
@@ -123,7 +121,7 @@
 					Deleting this event will remove all registration forms, registrations, and associated
 					data. This action cannot be undone.
 				</p>
-				<Button.Root type="submit" variant="destructive">Delete Event</Button.Root>
+				<Button type="submit" variant="destructive">Delete Event</Button>
 			</Card.Content>
 		</Card.Root>
 	</form>

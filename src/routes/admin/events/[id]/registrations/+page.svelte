@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Button from '$lib/components/ui/shadcn-svelte/button';
+	import { Button } from '$lib/components/ui/shadcn-svelte/button';
 	import * as Card from '$lib/components/ui/shadcn-svelte/card';
 	import * as Table from '$lib/components/ui/shadcn-svelte/table';
 	import { enhance } from '$app/forms';
@@ -32,7 +32,7 @@
 			{data.event.name} &mdash; {data.registrations.length} registration(s)
 		</p>
 	</div>
-	<Button.Root variant="outline" href="/admin/events/{data.event.id}">← Back to Event</Button.Root>
+	<Button variant="outline" href="/admin/events/{data.event.id}">← Back to Event</Button>
 </div>
 
 {#if data.registrations.length === 0}
@@ -78,14 +78,14 @@
 								<form method="POST" action="?/updateStatus" use:enhance>
 									<input type="hidden" name="registrationId" value={reg.id} />
 									<input type="hidden" name="status" value="confirmed" />
-									<Button.Root type="submit" variant="outline" size="sm">Confirm</Button.Root>
+									<Button type="submit" variant="outline" size="sm">Confirm</Button>
 								</form>
 							{/if}
 							{#if reg.status !== 'cancelled'}
 								<form method="POST" action="?/updateStatus" use:enhance>
 									<input type="hidden" name="registrationId" value={reg.id} />
 									<input type="hidden" name="status" value="cancelled" />
-									<Button.Root type="submit" variant="destructive" size="sm">Cancel</Button.Root>
+									<Button type="submit" variant="destructive" size="sm">Cancel</Button>
 								</form>
 							{/if}
 						</div>

@@ -1,14 +1,7 @@
 <script lang="ts">
 	import { getBreadcrumbs, setBreadcrumb } from '$lib/state/breadcrumb.svelte';
 
-	import {
-		Breadcrumb,
-		BreadcrumbList,
-		BreadcrumbItem,
-		BreadcrumbLink,
-		BreadcrumbPage,
-		BreadcrumbSeparator
-	} from '$lib/components/ui/shadcn-svelte/breadcrumb';
+	import * as Breadcrumb from '$lib/components/ui/shadcn-svelte/breadcrumb';
 	import { Button } from '$lib/components/ui/shadcn-svelte/button';
 	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
 
@@ -23,21 +16,21 @@
 <nav class="border-b bg-card">
 	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 		<div class="flex h-16 items-center justify-between">
-			<Breadcrumb>
-				<BreadcrumbList>
+			<Breadcrumb.Root>
+				<Breadcrumb.List>
 					{#each getBreadcrumbs().slice(0, -1) as breadcrumb}
-						<BreadcrumbItem>
-							<BreadcrumbLink href={breadcrumb.path}>{breadcrumb.name}</BreadcrumbLink>
-						</BreadcrumbItem>
-						<BreadcrumbSeparator />
+						<Breadcrumb.Item>
+							<Breadcrumb.Link href={breadcrumb.path}>{breadcrumb.name}</Breadcrumb.Link>
+						</Breadcrumb.Item>
+						<Breadcrumb.Separator />
 					{/each}
 					{#if getBreadcrumbs().length > 0}
-						<BreadcrumbItem>
-							<BreadcrumbPage>{getBreadcrumbs().at(-1)?.name}</BreadcrumbPage>
-						</BreadcrumbItem>
+						<Breadcrumb.Item>
+							<Breadcrumb.Page>{getBreadcrumbs().at(-1)?.name}</Breadcrumb.Page>
+						</Breadcrumb.Item>
 					{/if}
-				</BreadcrumbList>
-			</Breadcrumb>
+				</Breadcrumb.List>
+			</Breadcrumb.Root>
 			<div>
 				<Button href="/" variant="link" class="text-muted-foreground hover:text-foreground gap-1">
 					<ArrowLeft class="size-4" />

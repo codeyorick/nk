@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Button from '$lib/components/ui/shadcn-svelte/button';
+	import { Button } from '$lib/components/ui/shadcn-svelte/button';
 	import * as Card from '$lib/components/ui/shadcn-svelte/card';
 	import { Input } from '$lib/components/ui/shadcn-svelte/input';
 	import { Label } from '$lib/components/ui/shadcn-svelte/label';
@@ -117,12 +117,9 @@
 		</p>
 	</div>
 	<div class="flex gap-2">
-		<Button.Root variant="outline" href="/admin/events/{data.event.id}">← Back to Event</Button.Root
-		>
+		<Button variant="outline" href="/admin/events/{data.event.id}">← Back to Event</Button>
 		{#if data.event.isPublished}
-			<Button.Root variant="outline" href="/events/{data.event.slug}/register"
-				>Preview Form</Button.Root
-			>
+			<Button variant="outline" href="/events/{data.event.slug}/register">Preview Form</Button>
 		{/if}
 	</div>
 </div>
@@ -155,7 +152,7 @@
 				<Label for="partOrder">Order</Label>
 				<Input id="partOrder" name="sortOrder" type="number" value={data.parts.length} />
 			</div>
-			<Button.Root type="submit">Add Part</Button.Root>
+			<Button type="submit">Add Part</Button>
 		</form>
 	</Card.Content>
 </Card.Root>
@@ -203,7 +200,7 @@
 							<form method="POST" action="?/movePartUp" use:enhance>
 								<input type="hidden" name="partId" value={part.id} />
 								<input type="hidden" name="formId" value={data.form.id} />
-								<Button.Root
+								<Button
 									type="submit"
 									variant="outline"
 									size="sm"
@@ -211,12 +208,12 @@
 									title="Move up"
 								>
 									<ChevronUpIcon class="w-4 h-4" />
-								</Button.Root>
+								</Button>
 							</form>
 							<form method="POST" action="?/movePartDown" use:enhance>
 								<input type="hidden" name="partId" value={part.id} />
 								<input type="hidden" name="formId" value={data.form.id} />
-								<Button.Root
+								<Button
 									type="submit"
 									variant="outline"
 									size="sm"
@@ -224,9 +221,9 @@
 									title="Move down"
 								>
 									<ChevronDownIcon class="w-4 h-4" />
-								</Button.Root>
+								</Button>
 							</form>
-							<Button.Root
+							<Button
 								variant="outline"
 								size="sm"
 								onclick={() => {
@@ -234,10 +231,10 @@
 								}}
 							>
 								{editingPartId === part.id ? 'Close' : 'Edit'}
-							</Button.Root>
+							</Button>
 							<form method="POST" action="?/deletePart" use:enhance>
 								<input type="hidden" name="partId" value={part.id} />
-								<Button.Root type="submit" variant="destructive" size="sm">Delete</Button.Root>
+								<Button type="submit" variant="destructive" size="sm">Delete</Button>
 							</form>
 						</div>
 					</div>
@@ -373,7 +370,7 @@
 								{/if}
 							</div>
 
-							<Button.Root type="submit">Update Part</Button.Root>
+							<Button type="submit">Update Part</Button>
 						</form>
 					</Card.Content>
 					<Separator />
@@ -421,7 +418,7 @@
 										<form method="POST" action="?/moveFieldUp" use:enhance>
 											<input type="hidden" name="fieldId" value={field.id} />
 											<input type="hidden" name="partId" value={part.id} />
-											<Button.Root
+											<Button
 												type="submit"
 												variant="outline"
 												size="sm"
@@ -429,12 +426,12 @@
 												title="Move up"
 											>
 												<ChevronUpIcon class="w-4 h-4" />
-											</Button.Root>
+											</Button>
 										</form>
 										<form method="POST" action="?/moveFieldDown" use:enhance>
 											<input type="hidden" name="fieldId" value={field.id} />
 											<input type="hidden" name="partId" value={part.id} />
-											<Button.Root
+											<Button
 												type="submit"
 												variant="outline"
 												size="sm"
@@ -442,9 +439,9 @@
 												title="Move down"
 											>
 												<ChevronDownIcon class="w-4 h-4" />
-											</Button.Root>
+											</Button>
 										</form>
-										<Button.Root
+										<Button
 											variant="outline"
 											size="sm"
 											onclick={() => {
@@ -452,11 +449,10 @@
 											}}
 										>
 											{editingFieldId === field.id ? 'Close' : 'Edit'}
-										</Button.Root>
+										</Button>
 										<form method="POST" action="?/deleteField" use:enhance>
 											<input type="hidden" name="fieldId" value={field.id} />
-											<Button.Root type="submit" variant="destructive" size="sm">Delete</Button.Root
-											>
+											<Button type="submit" variant="destructive" size="sm">Delete</Button>
 										</form>
 									</div>
 								</div>
@@ -501,7 +497,7 @@
 											<Label>Required</Label>
 										</div>
 										<Input name="sortOrder" type="hidden" value={String(field.sortOrder)} />
-										<Button.Root type="submit" size="sm">Update Field</Button.Root>
+										<Button type="submit" size="sm">Update Field</Button>
 									</form>
 									<!-- Options for select/radio -->
 									{#if field.type === 'select' || field.type === 'radio'}
@@ -515,9 +511,7 @@
 													<form method="POST" action="?/deleteOption" use:enhance class="ml-auto">
 														<input type="hidden" name="fieldId" value={field.id} />
 														<input type="hidden" name="value" value={option.value} />
-														<Button.Root type="submit" variant="destructive" size="sm"
-															>Remove</Button.Root
-														>
+														<Button type="submit" variant="destructive" size="sm">Remove</Button>
 													</form>
 												</div>
 											{/each}
@@ -541,7 +535,7 @@
 													<Label>Value</Label>
 													<Input name="value" placeholder="Option value" required />
 												</div>
-												<Button.Root type="submit" size="sm">Add Option</Button.Root>
+												<Button type="submit" size="sm">Add Option</Button>
 											</form>
 										</div>
 									{/if}
@@ -594,18 +588,18 @@
 								<Input name="sortOrder" type="hidden" value={String(part.fields.length)} />
 							</div>
 							<div class="flex gap-2">
-								<Button.Root type="submit" size="sm">Add Field</Button.Root>
-								<Button.Root
+								<Button type="submit" size="sm">Add Field</Button>
+								<Button
 									type="button"
 									variant="outline"
 									size="sm"
-									onclick={() => (addingFieldToPartId = null)}>Cancel</Button.Root
+									onclick={() => (addingFieldToPartId = null)}>Cancel</Button
 								>
 							</div>
 						</form>
 					{:else}
-						<Button.Root variant="outline" size="sm" onclick={() => (addingFieldToPartId = part.id)}
-							>+ Add Field</Button.Root
+						<Button variant="outline" size="sm" onclick={() => (addingFieldToPartId = part.id)}
+							>+ Add Field</Button
 						>
 					{/if}
 				</Card.Content>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Button from '$lib/components/ui/shadcn-svelte/button';
+	import { Button } from '$lib/components/ui/shadcn-svelte/button';
 	import * as Card from '$lib/components/ui/shadcn-svelte/card';
 	import { Input } from '$lib/components/ui/shadcn-svelte/input';
 	import { Textarea } from '$lib/components/ui/shadcn-svelte/textarea';
@@ -105,7 +105,7 @@
 				</p>
 			</Card.Content>
 			<Card.Footer>
-				<Button.Root href="/events" variant="outline">← Back to Events</Button.Root>
+				<Button href="/events" variant="outline">← Back to Events</Button>
 			</Card.Footer>
 		</Card.Root>
 	{:else}
@@ -269,13 +269,13 @@
 					</Card.Content>
 					<Card.Footer class="flex justify-between">
 						{#if currentStep > 0}
-							<Button.Root type="button" variant="outline" onclick={() => currentStep--}>
+							<Button type="button" variant="outline" onclick={() => currentStep--}>
 								← Previous
-							</Button.Root>
+							</Button>
 						{:else}
 							<div></div>
 						{/if}
-						<Button.Root type="submit">Submit Registration</Button.Root>
+						<Button type="submit">Submit Registration</Button>
 					</Card.Footer>
 				</Card.Root>
 			</form>
@@ -369,13 +369,13 @@
 				</Card.Content>
 				<Card.Footer class="flex justify-between">
 					{#if currentStep > 0}
-						<Button.Root type="button" variant="outline" onclick={() => currentStep--}>
+						<Button type="button" variant="outline" onclick={() => currentStep--}>
 							← Previous
-						</Button.Root>
+						</Button>
 					{:else}
 						<div></div>
 					{/if}
-					<Button.Root type="button" onclick={() => currentStep++}>Next →</Button.Root>
+					<Button type="button" onclick={() => currentStep++}>Next →</Button>
 				</Card.Footer>
 			</Card.Root>
 		{/if}

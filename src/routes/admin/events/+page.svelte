@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Button from '$lib/components/ui/shadcn-svelte/button';
+	import { Button } from '$lib/components/ui/shadcn-svelte/button';
 	import * as Table from '$lib/components/ui/shadcn-svelte/table';
 
 	let { data } = $props();
@@ -7,7 +7,7 @@
 
 <div class="flex items-center justify-between mb-6">
 	<h1 class="text-3xl font-bold">Events</h1>
-	<Button.Root href="/admin/events/new">Create Event</Button.Root>
+	<Button href="/admin/events/new">Create Event</Button>
 </div>
 
 {#if data.events.length === 0}
@@ -47,14 +47,10 @@
 					<Table.Cell>{event.maxRegistrations ?? 'Unlimited'}</Table.Cell>
 					<Table.Cell class="text-right">
 						<div class="flex items-center justify-end gap-2">
-							<Button.Root variant="outline" size="sm" href="/admin/events/{event.id}"
-								>Edit</Button.Root
-							>
-							<Button.Root variant="outline" size="sm" href="/admin/events/{event.id}/form"
-								>Form</Button.Root
-							>
-							<Button.Root variant="outline" size="sm" href="/admin/events/{event.id}/registrations"
-								>Registrations</Button.Root
+							<Button variant="outline" size="sm" href="/admin/events/{event.id}">Edit</Button>
+							<Button variant="outline" size="sm" href="/admin/events/{event.id}/form">Form</Button>
+							<Button variant="outline" size="sm" href="/admin/events/{event.id}/registrations"
+								>Registrations</Button
 							>
 						</div>
 					</Table.Cell>

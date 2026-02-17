@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Button from '$lib/components/ui/shadcn-svelte/button';
+	import { Button } from '$lib/components/ui/shadcn-svelte/button';
 	import * as Card from '$lib/components/ui/shadcn-svelte/card';
 
 	let { data } = $props();
@@ -35,7 +35,7 @@
 						</div>
 					</Card.Content>
 					<Card.Footer>
-						<Button.Root href="/events/{event.slug}/register" class="w-full">Register</Button.Root>
+						<Button href="/events/{event.slug}/register" class="w-full">Register</Button>
 					</Card.Footer>
 				</Card.Root>
 			{/each}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Button from '$lib/components/ui/shadcn-svelte/button';
+	import { Button } from '$lib/components/ui/shadcn-svelte/button';
 	import * as Card from '$lib/components/ui/shadcn-svelte/card';
 	import { Input } from '$lib/components/ui/shadcn-svelte/input';
 	import { Textarea } from '$lib/components/ui/shadcn-svelte/textarea';
@@ -57,7 +57,7 @@
 					<Label for="slug">Slug *</Label>
 					<div class="flex gap-2">
 						<Input id="slug" name="slug" bind:value={slug} required placeholder="my-event" />
-						<Button.Root
+						<Button
 							type="button"
 							variant="outline"
 							size="sm"
@@ -66,7 +66,7 @@
 							}}
 						>
 							{autoSlug ? 'Manual' : 'Auto'}
-						</Button.Root>
+						</Button>
 					</div>
 					{#if form?.errors?.slug}
 						<p class="text-sm text-destructive">{form.errors.slug[0]}</p>
@@ -122,8 +122,8 @@
 				</div>
 			</Card.Content>
 			<Card.Footer class="flex justify-between">
-				<Button.Root variant="outline" href="/admin/events">Cancel</Button.Root>
-				<Button.Root type="submit">Create Event</Button.Root>
+				<Button variant="outline" href="/admin/events">Cancel</Button>
+				<Button type="submit">Create Event</Button>
 			</Card.Footer>
 		</Card.Root>
 	</form>
