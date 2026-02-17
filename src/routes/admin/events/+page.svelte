@@ -31,15 +31,15 @@
 			<Table.Row>
 				<Table.Head>Name</Table.Head>
 				<Table.Head>Published</Table.Head>
-				<Table.Head>Start Date</Table.Head>
-				<Table.Head>Max Registrations</Table.Head>
+				<Table.Head class="max-sm:hidden">Start Date</Table.Head>
+				<Table.Head class="max-sm:hidden">Max Registrations</Table.Head>
 				<Table.Head class="text-right">Actions</Table.Head>
 			</Table.Row>
 		</Table.Header>
 		<Table.Body>
 			{#each data.events as event}
 				<Table.Row>
-					<Table.Cell class="font-medium">{event.name}</Table.Cell>
+					<Table.Cell class="font-medium max-w-36 overflow-hidden">{event.name}</Table.Cell>
 					<Table.Cell>
 						<Badge
 							class={event.isPublished
@@ -49,10 +49,10 @@
 							{event.isPublished ? 'Published' : 'Draft'}
 						</Badge>
 					</Table.Cell>
-					<Table.Cell>
+					<Table.Cell class="max-sm:hidden">
 						{event.startDate ? new Date(event.startDate).toLocaleDateString() : '—'}
 					</Table.Cell>
-					<Table.Cell>{event.maxRegistrations ?? 'Unlimited'}</Table.Cell>
+					<Table.Cell class="max-sm:hidden">{event.maxRegistrations ?? 'Unlimited'}</Table.Cell>
 					<Table.Cell class="text-right">
 						<div class="flex items-center justify-end gap-2">
 							<Tooltip.Root>
