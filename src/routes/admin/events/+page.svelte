@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Badge } from '$lib/components/ui/shadcn-svelte/badge';
 	import { Button } from '$lib/components/ui/shadcn-svelte/button';
+	import * as ButtonGroup from '$lib/components/ui/shadcn-svelte/button-group';
 	import * as Empty from '$lib/components/ui/shadcn-svelte/empty';
 	import * as Table from '$lib/components/ui/shadcn-svelte/table';
 	import * as Tooltip from '$lib/components/ui/shadcn-svelte/tooltip';
@@ -55,51 +56,68 @@
 					<Table.Cell class="max-sm:hidden">{event.maxRegistrations ?? 'Unlimited'}</Table.Cell>
 					<Table.Cell class="text-right">
 						<div class="flex items-center justify-end gap-2">
-							<Tooltip.Root>
-								<Tooltip.Trigger>
-									<Button
-										variant="outline"
-										size="icon-sm"
-										href="/admin/events/{event.id}"
-										aria-label="Edit Event"
-									>
-										<SettingsIcon />
-									</Button>
-								</Tooltip.Trigger>
-								<Tooltip.Content>
-									<p>Edit event</p>
-								</Tooltip.Content>
-							</Tooltip.Root>
-							<Tooltip.Root>
-								<Tooltip.Trigger>
-									<Button
-										variant="outline"
-										size="icon-sm"
-										href="/admin/events/{event.id}/form"
-										aria-label="Edit Form"
-									>
-										<PencilIcon />
-									</Button>
-								</Tooltip.Trigger>
-								<Tooltip.Content>
-									<p>Edit form</p>
-								</Tooltip.Content>
-							</Tooltip.Root>
-							<Tooltip.Root>
-								<Tooltip.Trigger>
-									<Button
-										variant="outline"
-										size="icon-sm"
-										href="/admin/events/{event.id}/registrations"
-										aria-label="View Registrations"
-									>
-										<Rows4Icon />
-									</Button>
-								</Tooltip.Trigger>
-								<Tooltip.Content>
-									<p>View registrations</p>
-								</Tooltip.Content>
-							</Tooltip.Root>
+							<ButtonGroup.Root>
+								<Tooltip.Root>
+									<Tooltip.Trigger>
+										{#snippet child({ props })}
+											<Button
+												variant="ghost"
+												size="icon-sm"
+												href="/admin/events/{event.id}"
+												aria-label="Edit Event"
+												{...props}
+											>
+												<SettingsIcon />
+											</Button>
+										{/snippet}
+									</Tooltip.Trigger>
+									<Tooltip.Content>
+										<p>Edit event</p>
+									</Tooltip.Content>
+								</Tooltip.Root>
+
+								<ButtonGroup.Separator />
+
+								<Tooltip.Root>
+									<Tooltip.Trigger>
+										{#snippet child({ props })}
+											<Button
+												variant="ghost"
+												size="icon-sm"
+												href="/admin/events/{event.id}/form"
+												aria-label="Edit Form"
+												{...props}
+											>
+												<PencilIcon />
+											</Button>
+										{/snippet}
+									</Tooltip.Trigger>
+									<Tooltip.Content>
+										<p>Edit form</p>
+									</Tooltip.Content>
+								</Tooltip.Root>
+
+								<ButtonGroup.Separator />
+
+								<Tooltip.Root>
+									<Tooltip.Trigger>
+										{#snippet child({ props })}
+											<Button
+												variant="ghost"
+												size="icon-sm"
+												href="/admin/events/{event.id}/registrations"
+												aria-label="View Registrations"
+												{...props}
+											>
+												<Rows4Icon />
+											</Button>
+										{/snippet}
+									</Tooltip.Trigger>
+									<Tooltip.Content>
+										<p>View registrations</p>
+									</Tooltip.Content>
+								</Tooltip.Root>
+							</ButtonGroup.Root>
 						</div>
 					</Table.Cell>
 				</Table.Row>

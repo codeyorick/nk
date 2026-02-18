@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/shadcn-svelte/button';
 	import * as Alert from '$lib/components/ui/shadcn-svelte/alert';
+	import * as ButtonGroup from '$lib/components/ui/shadcn-svelte/button-group';
 	import * as Card from '$lib/components/ui/shadcn-svelte/card';
 	import * as Field from '$lib/components/ui/shadcn-svelte/field';
 	import { Input } from '$lib/components/ui/shadcn-svelte/input';
@@ -17,16 +18,35 @@
 
 	let { data, form } = $props();
 
+	function generateSlug(name: string): string {
+		return name
+			.toLowerCase()
+			.replace(/[^a-z0-9\s-]/g, '')
+			.replace(/\s+/g, '-')
+			.replace(/-+/g, '-')
+			.trim();
+	}
+
+	let name = $derived(form?.values?.name ?? data.event.name);
+	let slug = $derived(form?.values?.slug ?? data.event.slug);
+	let autoSlug = $derived(data.event.slug === generateSlug(data.event.name));
+
+	$effect(() => {
+		if (autoSlug) {
+			slug = generateSlug(name);
+		}
+	});
+
 	let date = $derived({
 		start: dateToCalendarDate(data.event.startDate),
 		end: dateToCalendarDate(data.event.endDate)
 	});
 </script>
 
-<div class="max-w-lg">
-	<div class="flex items-center justify-between mb-6">
+<div class="max-w-lg w-full">
+	<div class="flex items-center justify-between gap-4 mb-6">
 		<h1 class="text-3xl font-bold">Edit Event</h1>
-		<div class="flex gap-2">
+		<ButtonGroup.Root>
 			<Button
 				variant="outline"
 				size="sm"
@@ -45,7 +65,7 @@
 				<Rows4Icon />
 				<span>Registrations</span>
 			</Button>
-		</div>
+		</ButtonGroup.Root>
 	</div>
 
 	<form method="POST" action="?/update" use:enhance>
@@ -57,7 +77,7 @@
 				<Field.Group>
 					<Field.Field>
 						<Field.Label for="name">Name *</Field.Label>
-						<Input id="name" name="name" value={form?.values?.name ?? data.event.name} />
+						<Input id="name" name="name" bind:value={name} />
 						{#if form?.errors?.name}
 							<Field.Error>{form.errors.name[0]}</Field.Error>
 						{/if}
@@ -65,7 +85,26 @@
 
 					<Field.Field>
 						<Field.Label for="slug">Slug *</Field.Label>
-						<Input id="slug" name="slug" value={form?.values?.slug ?? data.event.slug} required />
+						<ButtonGroup.Root>
+							<Input
+								id="slug"
+								disabled={autoSlug}
+								bind:value={slug}
+								required
+								placeholder="my-event"
+							/>
+							<Button
+								variant="outline"
+								onclick={() => {
+									autoSlug = !autoSlug;
+								}}
+							>
+								{autoSlug ? 'Manual' : 'Auto'}
+							</Button>
+						</ButtonGroup.Root>
+
+						<input type="hidden" name="slug" value={slug} />
+
 						{#if form?.errors?.slug}
 							<Field.Error>{form.errors.slug[0]}</Field.Error>
 						{/if}
@@ -83,6 +122,8 @@
 					<Field.Field>
 						<Field.Label for="startDate">Date</Field.Label>
 						<DateRangePicker bind:value={date} />
+						<input name="startDate" type="hidden" value={date.start?.toString() ?? ''} />
+						<input name="endDate" type="hidden" value={date.end?.toString() ?? ''} />
 					</Field.Field>
 
 					<Field.Field>
@@ -95,8 +136,6 @@
 							placeholder="Leave empty for unlimited"
 							value={form?.values?.maxRegistrations ?? data.event.maxRegistrations ?? ''}
 						/>
-						<input name="startDate" type="hidden" value={date.start?.toString() ?? ''} />
-						<input name="endDate" type="hidden" value={date.end?.toString() ?? ''} />
 					</Field.Field>
 
 					<Field.Field orientation="horizontal">
