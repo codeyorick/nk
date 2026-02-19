@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/shadcn-svelte/button';
 	import * as Card from '$lib/components/ui/shadcn-svelte/card';
+	import * as Empty from '$lib/components/ui/shadcn-svelte/empty';
 	import * as Table from '$lib/components/ui/shadcn-svelte/table';
 	import { enhance } from '$app/forms';
 	import { setBreadcrumb } from '$lib/state/breadcrumb.svelte.js';
 	import { page } from '$app/state';
+	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
 
 	$effect(() => {
 		setBreadcrumb({
@@ -25,90 +27,95 @@
 	let expandedId = $state<string | null>(null);
 </script>
 
-<div class="flex items-center justify-between mb-6">
-	<div>
-		<h1 class="text-3xl font-bold">Registrations</h1>
-		<p class="text-muted-foreground mt-1">
-			{data.event.name} &mdash; {data.registrations.length} registration(s)
-		</p>
+<div class="max-w-lg w-full">
+	<div class="flex items-center justify-between mb-6">
+		<div>
+			<h1 class="text-3xl font-bold">Registrations</h1>
+			<p class="text-muted-foreground mt-1">
+				{data.event.name} &mdash; {data.registrations.length} registration(s)
+			</p>
+		</div>
+		<Button size="sm" variant="outline" href="/admin/events/{data.event.id}">
+			<ArrowLeft class="size-4" />
+			Back to Event
+		</Button>
 	</div>
-	<Button variant="outline" href="/admin/events/{data.event.id}">← Back to Event</Button>
-</div>
 
-{#if data.registrations.length === 0}
-	<Card.Root>
-		<Card.Content class="py-12 text-center text-muted-foreground">
-			<p class="text-lg">No registrations yet</p>
-		</Card.Content>
-	</Card.Root>
-{:else}
-	<Table.Root>
-		<Table.Header>
-			<Table.Row>
-				<Table.Head>Email</Table.Head>
-				<Table.Head>Status</Table.Head>
-				<Table.Head>Registered</Table.Head>
-				<Table.Head>Confirmed</Table.Head>
-				<Table.Head class="text-right">Actions</Table.Head>
-			</Table.Row>
-		</Table.Header>
-		<Table.Body>
-			{#each data.registrations as reg}
-				<Table.Row
-					class="cursor-pointer"
-					onclick={() => (expandedId = expandedId === reg.id ? null : reg.id)}
-				>
-					<Table.Cell class="font-medium">{reg.email}</Table.Cell>
-					<Table.Cell>
-						<span
-							class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium {statusColors[
-								reg.status
-							]}"
-						>
-							{reg.status}
-						</span>
-					</Table.Cell>
-					<Table.Cell>{new Date(reg.createdAt).toLocaleString()}</Table.Cell>
-					<Table.Cell
-						>{reg.confirmedAt ? new Date(reg.confirmedAt).toLocaleString() : '—'}</Table.Cell
-					>
-					<Table.Cell class="text-right">
-						<div class="flex items-center justify-end gap-1">
-							{#if reg.status !== 'confirmed'}
-								<form method="POST" action="?/updateStatus" use:enhance>
-									<input type="hidden" name="registrationId" value={reg.id} />
-									<input type="hidden" name="status" value="confirmed" />
-									<Button type="submit" variant="outline" size="sm">Confirm</Button>
-								</form>
-							{/if}
-							{#if reg.status !== 'cancelled'}
-								<form method="POST" action="?/updateStatus" use:enhance>
-									<input type="hidden" name="registrationId" value={reg.id} />
-									<input type="hidden" name="status" value="cancelled" />
-									<Button type="submit" variant="destructive" size="sm">Cancel</Button>
-								</form>
-							{/if}
-						</div>
-					</Table.Cell>
+	{#if data.registrations.length === 0}
+		<Empty.Root class="from-muted/50 to-background h-full bg-linear-to-b from-30%">
+			<Empty.Header>
+				<Empty.Title>No registrations yet</Empty.Title>
+			</Empty.Header>
+		</Empty.Root>
+	{:else}
+		<Table.Root>
+			<Table.Header>
+				<Table.Row>
+					<Table.Head>Email</Table.Head>
+					<Table.Head>Status</Table.Head>
+					<Table.Head>Registered</Table.Head>
+					<Table.Head>Confirmed</Table.Head>
+					<Table.Head class="text-right">Actions</Table.Head>
 				</Table.Row>
-				{#if expandedId === reg.id}
-					<Table.Row>
-						<Table.Cell colspan={5}>
-							<div class="bg-muted/50 rounded-md p-4">
-								<h4 class="font-medium mb-3">Registration Data</h4>
-								<dl class="grid grid-cols-2 gap-2">
-									{#each reg.data as field}
-										<div>
-											<dt class="text-sm text-muted-foreground">{field.fieldLabel}</dt>
-											<dd class="font-medium">{field.value}</dd>
-										</div>
-									{/each}
-								</dl>
+			</Table.Header>
+			<Table.Body>
+				{#each data.registrations as reg}
+					<Table.Row
+						class="cursor-pointer"
+						onclick={() => (expandedId = expandedId === reg.id ? null : reg.id)}
+					>
+						<Table.Cell class="font-medium">{reg.email}</Table.Cell>
+						<Table.Cell>
+							<span
+								class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium {statusColors[
+									reg.status
+								]}"
+							>
+								{reg.status}
+							</span>
+						</Table.Cell>
+						<Table.Cell>{new Date(reg.createdAt).toLocaleString()}</Table.Cell>
+						<Table.Cell
+							>{reg.confirmedAt ? new Date(reg.confirmedAt).toLocaleString() : '—'}</Table.Cell
+						>
+						<Table.Cell class="text-right">
+							<div class="flex items-center justify-end gap-1">
+								{#if reg.status !== 'confirmed'}
+									<form method="POST" action="?/updateStatus" use:enhance>
+										<input type="hidden" name="registrationId" value={reg.id} />
+										<input type="hidden" name="status" value="confirmed" />
+										<Button type="submit" variant="outline" size="sm">Confirm</Button>
+									</form>
+								{/if}
+								{#if reg.status !== 'cancelled'}
+									<form method="POST" action="?/updateStatus" use:enhance>
+										<input type="hidden" name="registrationId" value={reg.id} />
+										<input type="hidden" name="status" value="cancelled" />
+										<Button type="submit" variant="destructive" size="sm">Cancel</Button>
+									</form>
+								{/if}
 							</div>
 						</Table.Cell>
 					</Table.Row>
-				{/if}
-			{/each}
-		</Table.Body>
-	</Table.Root>
-{/if}
+					{#if expandedId === reg.id}
+						<Table.Row>
+							<Table.Cell colspan={5}>
+								<div class="bg-muted/50 rounded-md p-4">
+									<h4 class="font-medium mb-3">Registration Data</h4>
+									<dl class="grid grid-cols-2 gap-2">
+										{#each reg.data as field}
+											<div>
+												<dt class="text-sm text-muted-foreground">{field.fieldLabel}</dt>
+												<dd class="font-medium">{field.value}</dd>
+											</div>
+										{/each}
+									</dl>
+								</div>
+							</Table.Cell>
+						</Table.Row>
+					{/if}
+				{/each}
+			</Table.Body>
+		</Table.Root>
+	{/if}
+</div>

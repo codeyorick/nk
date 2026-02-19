@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/shadcn-svelte/button';
 	import * as Card from '$lib/components/ui/shadcn-svelte/card';
+	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
 
 	let { data } = $props();
 </script>
@@ -23,7 +24,10 @@
 			{/if}
 		</Card.Content>
 		<Card.Footer>
-			<Button href="/events" variant="outline">← Back to Events</Button>
+			<Button href="/events" variant="outline">
+				<ArrowLeft class="size-4" />
+				Back to Events
+			</Button>
 		</Card.Footer>
 	</Card.Root>
 </div>

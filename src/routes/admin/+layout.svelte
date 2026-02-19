@@ -32,7 +32,12 @@
 				</Breadcrumb.List>
 			</Breadcrumb.Root>
 			<div>
-				<Button href="/" variant="link" class="text-muted-foreground hover:text-foreground gap-1">
+				<Button
+					href="/"
+					size="sm"
+					variant="ghost"
+					class="text-muted-foreground hover:text-foreground"
+				>
 					<ArrowLeft class="size-4" />
 					<span>Back to site</span>
 				</Button>

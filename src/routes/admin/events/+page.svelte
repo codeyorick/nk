@@ -15,11 +15,11 @@
 
 <div class="flex items-center justify-between w-full mb-6">
 	<h1 class="text-3xl font-bold">Events</h1>
-	<Button href="/admin/events/new">Create Event</Button>
+	<Button size="sm" variant="outline" href="/admin/events/new">Create Event</Button>
 </div>
 
 {#if data.events.length === 0}
-	<Empty.Root>
+	<Empty.Root class="max-w-lg w-full from-muted/50 to-background h-full bg-linear-to-b from-30%">
 		<Empty.Header>
 			<Empty.Title>No events yet</Empty.Title>
 			<Empty.Description>Get started by creating your first event.</Empty.Description>

@@ -8,6 +8,9 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/state';
 
+	import ArrowLeft from '@lucide/svelte/icons/arrow-left';
+	import ArrowRight from '@lucide/svelte/icons/arrow-right';
+
 	let { data, form } = $props();
 
 	const success = page.url.searchParams.get('success') === 'true';
@@ -105,7 +108,10 @@
 				</p>
 			</Card.Content>
 			<Card.Footer>
-				<Button href="/events" variant="outline">← Back to Events</Button>
+				<Button href="/events" variant="outline">
+					<ArrowLeft class="size-4" />
+					Back to Events
+				</Button>
 			</Card.Footer>
 		</Card.Root>
 	{:else}
@@ -270,7 +276,8 @@
 					<Card.Footer class="flex justify-between">
 						{#if currentStep > 0}
 							<Button type="button" variant="outline" onclick={() => currentStep--}>
-								← Previous
+								<ArrowLeft class="size-4" />
+								Previous
 							</Button>
 						{:else}
 							<div></div>
@@ -370,12 +377,16 @@
 				<Card.Footer class="flex justify-between">
 					{#if currentStep > 0}
 						<Button type="button" variant="outline" onclick={() => currentStep--}>
-							← Previous
+							<ArrowLeft class="size-4" />
+							Previous
 						</Button>
 					{:else}
 						<div></div>
 					{/if}
-					<Button type="button" onclick={() => currentStep++}>Next →</Button>
+					<Button type="button" onclick={() => currentStep++}
+						>Next
+						<ArrowRight class="size-4" />
+					</Button>
 				</Card.Footer>
 			</Card.Root>
 		{/if}

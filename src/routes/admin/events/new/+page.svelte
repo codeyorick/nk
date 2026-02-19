@@ -67,12 +67,12 @@
 						<ButtonGroup.Root>
 							<Input
 								id="slug"
-								name="slug"
 								disabled={autoSlug}
 								bind:value={slug}
 								required
 								placeholder="my-event"
 							/>
+							<input type="hidden" name="slug" value={slug} />
 							<Button
 								variant="outline"
 								onclick={() => {
